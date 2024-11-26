@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz sur les Éruptions Volcaniques</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 500px;
+    }
+
+    h1 {
+      color: #FF5722;
+    }
+
+    button {
+      background: #FF5722;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px;
+    }
+
+    button:hover {
+      background: #E64A19;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .answers {
+      margin: 10px 0;
+    }
+
+    .answers button {
+      display: block;
+      margin: 5px auto;
+    }
+
+    .score {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="home">
+      <h1>Quiz sur les Éruptions Volcaniques</h1>
+      <button onclick="startQuiz()">Démarrer le Quiz</button>
+    </div>
+
+    <div id="quiz" class="hidden">
+      <div id="question-container" class="question"></div>
+      <div class="answers"></div>
+    </div>
+
+    <div id="result" class="hidden">
+      <h2>Quiz Terminé !</h2>
+      <p class="score"></p>
+      <button onclick="restartQuiz()">Recommencer</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      { 
+        question: "Quelle est la plus grande éruption volcanique de l'histoire récente ?", 
+        answers: ["Krakatoa (1883)", "Eyjafjallajökull (2010)", "Vésuve (79 ap. J.-C.)"], 
+        correct: 0 
+      },
+      { 
+        question: "Quel est le volcan le plus actif du monde ?", 
+        answers: ["Kilauea (Hawaï)", "Etna (Italie)", "Fujiyama (Japon)"], 
+        correct: 0 
+      },
+      { 
+        question: "Qu'est-ce qu'une coulée pyroclastique ?", 
+        answers: [
+          "Un flux de lave très rapide", 
+          "Un mélange de gaz chauds, de cendres et de roches", 
+          "Une éruption sous-marine"
+        ], 
+        correct: 1 
+      },
+      { 
+        question: "Où se trouve le supervolcan de Yellowstone ?", 
+        answers: ["États-Unis", "Canada", "Mexique"], 
+        correct: 0 
+      },
+      { 
+        question: "Quel type de volcan est le Mauna Loa ?", 
+        answers: ["Stratovolcan", "Volcan bouclier", "Cône de cendres"], 
+        correct: 1 
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const homeScreen = document.getElementById('home');
+    const quizScreen = document.getElementById('quiz');
+    const resultScreen = document.getElementById('result');
+    const questionContainer = document.getElementById('question-container');
+    const answersContainer = document.querySelector('.answers');
+    const scoreDisplay = document.querySelector('.score');
+
+    function startQuiz() {
+      homeScreen.classList.add('hidden');
+      quizScreen.classList.remove('hidden');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const questionData = questions[currentQuestionIndex];
+      questionContainer.textContent = questionData.question;
+      answersContainer.innerHTML = '';
+      questionData.answers.forEach((answer, index) => {
+        const button = document.createElement('button');
+        button.textContent = answer;
+        button.onclick = () => checkAnswer(index);
+        answersContainer.appendChild(button);
+      });
+    }
+
+    function checkAnswer(selectedIndex) {
+      const correctIndex = questions[currentQuestionIndex].correct;
+      if (selectedIndex === correctIndex) {
+        score++;
+      }
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      quizScreen.classList.add('hidden');
+      resultScreen.classList.remove('hidden');
+      scoreDisplay.textContent = `Votre score est de ${score} sur ${questions.length}.`;
+    }
+
+    function restartQuiz() {
+      currentQuestionIndex = 0;
+      score = 0;
+      resultScreen.classList.add('hidden');
+      homeScreen.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
