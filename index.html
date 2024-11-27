@@ -1,179 +1,110 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz sur les Éruptions Volcaniques</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f9;
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article sur les Volcans</title>
+    <style>
+        /* Réinitialisation */
+        body, h1, h2, p, ul, li {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .container {
-      text-align: center;
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      width: 90%;
-      max-width: 500px;
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4; /* Couleur de fond douce */
+            color: #333; /* Texte facile à lire */
+            padding: 10px;
+        }
 
-    h1 {
-      color: #FF5722;
-    }
+        .header {
+            background: linear-gradient(135deg, #ff4500, #ff6347); /* Couleurs chaudes */
+            color: #fff;
+            text-align: center;
+            padding: 20px 10px;
+            border-radius: 5px;
+        }
 
-    button {
-      background: #FF5722;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      margin: 10px;
-    }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
 
-    button:hover {
-      background: #E64A19;
-    }
+        .header p {
+            font-size: 1.2em;
+        }
 
-    .hidden {
-      display: none;
-    }
+        .content {
+            margin: 20px 0;
+        }
 
-    .question {
-      margin-bottom: 20px;
-    }
+        .content article {
+            background: #fff;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-    .answers {
-      margin: 10px 0;
-    }
+        .content h2 {
+            color: #ff4500;
+            margin-bottom: 10px;
+        }
 
-    .answers button {
-      display: block;
-      margin: 5px auto;
-    }
+        .content p, .content ul {
+            font-size: 1em;
+        }
 
-    .score {
-      font-size: 24px;
-      font-weight: bold;
-    }
-  </style>
+        .content ul {
+            margin-top: 10px;
+            padding-left: 20px;
+            list-style-type: disc;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #333;
+            color: #fff;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div id="home">
-      <h1>Quiz sur les Éruptions Volcaniques</h1>
-      <button onclick="startQuiz()">Démarrer le Quiz</button>
-    </div>
-
-    <div id="quiz" class="hidden">
-      <div id="question-container" class="question"></div>
-      <div class="answers"></div>
-    </div>
-
-    <div id="result" class="hidden">
-      <h2>Quiz Terminé !</h2>
-      <p class="score"></p>
-      <button onclick="restartQuiz()">Recommencer</button>
-    </div>
-  </div>
-
-  <script>
-    const questions = [
-      { 
-        question: "Quelle est la plus grande éruption volcanique de l'histoire récente ?", 
-        answers: ["Krakatoa (1883)", "Eyjafjallajökull (2010)", "Vésuve (79 ap. J.-C.)"], 
-        correct: 0 
-      },
-      { 
-        question: "Quel est le volcan le plus actif du monde ?", 
-        answers: ["Kilauea (Hawaï)", "Etna (Italie)", "Fujiyama (Japon)"], 
-        correct: 0 
-      },
-      { 
-        question: "Qu'est-ce qu'une coulée pyroclastique ?", 
-        answers: [
-          "Un flux de lave très rapide", 
-          "Un mélange de gaz chauds, de cendres et de roches", 
-          "Une éruption sous-marine"
-        ], 
-        correct: 1 
-      },
-      { 
-        question: "Où se trouve le supervolcan de Yellowstone ?", 
-        answers: ["États-Unis", "Canada", "Mexique"], 
-        correct: 0 
-      },
-      { 
-        question: "Quel type de volcan est le Mauna Loa ?", 
-        answers: ["Stratovolcan", "Volcan bouclier", "Cône de cendres"], 
-        correct: 1 
-      }
-    ];
-
-    let currentQuestionIndex = 0;
-    let score = 0;
-
-    const homeScreen = document.getElementById('home');
-    const quizScreen = document.getElementById('quiz');
-    const resultScreen = document.getElementById('result');
-    const questionContainer = document.getElementById('question-container');
-    const answersContainer = document.querySelector('.answers');
-    const scoreDisplay = document.querySelector('.score');
-
-    function startQuiz() {
-      homeScreen.classList.add('hidden');
-      quizScreen.classList.remove('hidden');
-      showQuestion();
-    }
-
-    function showQuestion() {
-      const questionData = questions[currentQuestionIndex];
-      questionContainer.textContent = questionData.question;
-      answersContainer.innerHTML = '';
-      questionData.answers.forEach((answer, index) => {
-        const button = document.createElement('button');
-        button.textContent = answer;
-        button.onclick = () => checkAnswer(index);
-        answersContainer.appendChild(button);
-      });
-    }
-
-    function checkAnswer(selectedIndex) {
-      const correctIndex = questions[currentQuestionIndex].correct;
-      if (selectedIndex === correctIndex) {
-        score++;
-      }
-      currentQuestionIndex++;
-      if (currentQuestionIndex < questions.length) {
-        showQuestion();
-      } else {
-        showResult();
-      }
-    }
-
-    function showResult() {
-      quizScreen.classList.add('hidden');
-      resultScreen.classList.remove('hidden');
-      scoreDisplay.textContent = `Votre score est de ${score} sur ${questions.length}.`;
-    }
-
-    function restartQuiz() {
-      currentQuestionIndex = 0;
-      score = 0;
-      resultScreen.classList.add('hidden');
-      homeScreen.classList.remove('hidden');
-    }
-  </script>
+    <header class="header">
+        <h1>Les Volcans : Des Géants de Feu</h1>
+        <p>Découvrez les secrets des volcans, des éruptions spectaculaires à leur rôle dans l'écosystème.</p>
+    </header>
+    <main class="content">
+        <article>
+            <h2>Qu'est-ce qu'un volcan ?</h2>
+            <p>Un volcan est une ouverture dans la croûte terrestre permettant la sortie de magma, de cendres et de gaz.</p>
+        </article>
+        <article>
+            <h2>Les différents types de volcans</h2>
+            <ul>
+                <li>Volcans boucliers</li>
+                <li>Stratovolcans</li>
+                <li>Volcans sous-marins</li>
+            </ul>
+        </article>
+        <article>
+            <h2>L'impact des éruptions volcaniques</h2>
+            <p>Les éruptions peuvent être destructrices, mais elles enrichissent également les sols et influencent le climat.</p>
+        </article>
+    </main>
+    <footer class="footer">
+        <p>&copy; 2024 Article sur les Volcans</p>
+    </footer>
+    <script>
+        // Exemple de script simple pour afficher une alerte
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("Bienvenue sur l'article sur les volcans !");
+        });
+    </script>
 </body>
 </html>
